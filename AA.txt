@@ -1,0 +1,35 @@
+A2 subnetting acl
+router cmd
+en
+conf t
+ip access-list standard 1
+permit 10.0.0.2 0.0.0.0
+permit 10.0.0.3 0.0.0.0
+deny 10.0.0.4 0.0.0.0
+end
+copy run start
+
+en
+conf t
+inter fastethernet 0/1
+ip access-group 1 out
+end
+copy run start
+
+A3 eigrp
+router 1
+en
+config t
+hostname Branch_office
+int f0/0
+ip add 192.168.3.1 255.255.255.0
+no sh
+int f0/1
+ip add 192.168.1.1 255.255.255.0
+no sh
+exit
+router eigrp 1
+network 192.168.3.0
+network 192.168.1.0
+
+router2
